@@ -11,9 +11,9 @@ const Content = (props) => {
   console.log(props.parts)
   return (
     <div>
-      //solution if number of parts is unknown
+      {/*solution if number of parts is unknown */}
       {/* {props.parts.map((part, index) => <Part key={index} name={part.name} exercises={part.exercises}/>)} */}
-      //solution as per example given in 1.2
+      {/* //solution as per example given in 1.2 */}
       <Part name={props.parts[0].name} exercises={props.parts[0].exercises} />
       <Part name={props.parts[1].name} exercises={props.parts[1].exercises} />
       <Part name={props.parts[2].name} exercises={props.parts[2].exercises} />
@@ -22,8 +22,9 @@ const Content = (props) => {
 }
 
 const Part = (props) => {
+  const {name, exercises} = props
   return (
-    <p>{props.name} {props.exercises}</p>
+    <p>{name} {exercises}</p>
   )
 }
 
