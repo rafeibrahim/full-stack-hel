@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+//added comments to check repository working with remote github
+
 const Header = (props) => {
   return (
     <h1>{props.course}</h1>
