@@ -1,20 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Note from "./components/Note";
 
-
-const App = (props) => {
-  const { notes } = props
-
+const App = ({ notes }) => {
   return (
     <div>
       <h1>Notes</h1>
       <ul>
-        <li>{notes[0].content}</li>
-        <li>{notes[1].content}</li>
-        <li>{notes[2].content}</li>
+        {notes.map((note) => {
+          return <Note key={note.id} note={note}/>;
+        })}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export default App;
