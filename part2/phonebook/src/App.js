@@ -1,38 +1,80 @@
-import React, { useState, useEffect } from 'react'
-import Filter from './components/Filter';
-import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
+import axios from "axios";
+import personService from "./services/persons-fetcher";
 
 const App = () => {
-
   const [persons, setPersons] = useState([]);
-
-  const [ newName, setNewName ] = useState('');
-  const [ newNumber, setNewNumber] = useState('');
-  const [ searchString, setSearchString] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
-    console.log('effect');
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => {
-        console.log('promise fulfilled', response.data)
-        setPersons(response.data);
-      })
+    console.log("effect");
+    // axios.get("http://localhost:3001/persons").then((response) => {
+    //   console.log("promise fulfilled", response.data);
+    //   setPersons(response.data);
+    // });
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
   }, []);
 
+  const deletePersonHandler = (id, name) => {
+    if (window.confirm(`Delete ${name}`)) {
+      personService.remove(id).then(() => {
+        setPersons(
+          persons.filter((person) => {
+            return person.id !== id;
+          })
+        );
+      });
+    }
+  };
+
+  // must get a fitting name like add Person
   const addName = (event) => {
     event.preventDefault();
     console.log("add btn clicked", event.target);
-    const isDuplicate = persons.find((person) => {
-        return person.name === newName
+
+    const personObjectToBeAdded = {
+      name: newName,
+      number: newNumber,
+    };
+
+    const matchingPerson = persons.find((person) => {
+      return person.name === newName;
     });
 
-    if (isDuplicate) {
-      window.alert(`${newName} is already added to phonebook`)
-    }else {
-      setPersons(persons.concat({name: newName, number: newNumber}));
+    if (matchingPerson) {
+      //window.alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${matchingPerson.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        console.log("update orders received!!!");
+        personService
+          .update(matchingPerson.id, personObjectToBeAdded)
+          .then((returnedPersonObject) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPersonObject.id
+                  ? person
+                  : returnedPersonObject
+              )
+            );
+          });
+      }
+    } else {
+      // axios
+      //   .post("http://localhost:3001/persons", personObject)
+      //   .then((response) => setPersons(persons.concat(response.data)));
+      personService.create(personObjectToBeAdded).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+      });
     }
   };
 
@@ -44,7 +86,7 @@ const App = () => {
   const handleNumberChange = (event) => {
     console.log("handleNumberChange", event.target.value);
     setNewNumber(event.target.value);
-  }; 
+  };
 
   const handleSearchChange = (event) => {
     console.log("handleSearchChange", event.target.value);
@@ -56,15 +98,17 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter onChange={handleSearchChange} />
       <h2>add a new</h2>
-      <PersonForm 
-        onFormSubmit={addName} 
+      <PersonForm
+        onFormSubmit={addName}
         onNameChange={handleNameChange}
         onNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons 
-        personsArray={persons} 
-        searchString={searchString}/>
+      <Persons
+        personsArray={persons}
+        searchString={searchString}
+        deletePersonHandler={deletePersonHandler}
+      />
     </div>
   );
 };

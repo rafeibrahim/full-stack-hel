@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Note from "./components/Note";
+import noteService from "./services/notes";
 
 const App = () => {
   //In order to get our page to update when new notes are added
@@ -17,21 +18,29 @@ const App = () => {
 
   const hook = () => {
     console.log("effect");
-    axios.get("http://localhost:3001/notes").then((response) => {
-      console.log("promise fulfilled");
+    // axios.get("http://localhost:3001/notes").then((response) => {
+    //   console.log("promise fulfilled");
+    // });
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
     });
   };
 
+
   useEffect(hook, []);
 
-  const toggleImportanceOf = id => {
-    const url = `http://localhost:3001/notes/${id}`
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
-  
-    axios.put(url, changedNote).then(response => {
-      setNotes(notes.map(note => note.id !== id ? note : response.data))
-    })
+  const toggleImportanceOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`;
+    const note = notes.find((n) => n.id === id);
+    const changedNote = { ...note, important: !note.important };
+
+    // axios.put(url, changedNote).then((response) => {
+    //   setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+    // });
+
+    noteService.update(id, changedNote).then((returnedNote) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+    });
   };
 
   console.log("render", notes.length, "notes");
@@ -59,9 +68,14 @@ const App = () => {
       important: Math.random() < 0.5,
     };
 
-    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
-      console.log(response);
-      setNotes(notes.concat(response.data));
+    // axios.post("http://localhost:3001/notes", noteObject).then((response) => {
+    //   console.log(response);
+    //   setNotes(notes.concat(response.data));
+    //   setNewNote("");
+    // });
+
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
       setNewNote("");
     });
   };
