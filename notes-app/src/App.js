@@ -4,8 +4,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
+import './index.css';
 import Note from "./components/Note";
 import noteService from "./services/notes";
+import Footer from "./components/Footer";
+import Notification from "./components/Notification";
+
 
 const App = () => {
   //In order to get our page to update when new notes are added
@@ -13,6 +17,7 @@ const App = () => {
   const [newNote, setNewNote] = useState("a new note...");
   const [notes, setNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
 
   //using useEffect hook to retreive notes now 18072022
 
@@ -40,7 +45,15 @@ const App = () => {
 
     noteService.update(id, changedNote).then((returnedNote) => {
       setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
-    });
+    }).catch(error => {
+      setErrorMessage(
+        `Note '${note.content}' was already removed from server`
+      )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      setNotes(notes.filter(n => n.id !== id))
+    })
   };
 
   console.log("render", notes.length, "notes");
@@ -93,6 +106,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage}/>
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? "important" : "all"}
@@ -113,6 +127,7 @@ const App = () => {
         <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
       </form>
+      <Footer />
     </div>
   );
 };
