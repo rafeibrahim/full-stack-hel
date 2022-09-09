@@ -17,7 +17,7 @@ const App = () => {
   const [newNote, setNewNote] = useState("a new note...");
   const [notes, setNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   //using useEffect hook to retreive notes now 18072022
 
