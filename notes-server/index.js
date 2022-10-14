@@ -1,7 +1,8 @@
 //const http = require('http');
-
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
+const Note = require("./models/note");
 
 let notes = [
   {
@@ -24,11 +25,6 @@ let notes = [
   },
 ];
 
-// const app = http.createServer((request, response) => {
-//     response.writeHead(200, {'Content-Type': 'application/json'});
-//     response.end(JSON.stringify(notes));
-// });
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -39,24 +35,21 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/notes", (request, response) => {
-  response.json(notes);
+  Note.find({}).then(notes => {
+    response.json(notes);
+  });
 });
 
 app.get("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  console.log(id);
-  const note = notes.find((note) => {
-    console.log(note.id, typeof note.id, id, typeof id, note.id === id);
-    return note.id === id;
+  // const id = Number(request.params.id);
+  // console.log(id);
+  // const note = notes.find((note) => {
+  //   console.log(note.id, typeof note.id, id, typeof id, note.id === id);
+  //   return note.id === id;
+  // });
+  Note.findById(request.params.id).then(note => {
+    response.json(note)
   });
-  console.log(note);
-
-  if (note) {
-    response.json(note);
-  } else {
-    response.statusMessage = `No note found with id ${id}`;
-    response.status(404).end();
-  }
 });
 
 app.delete("/api/notes/:id", (request, response) => {
@@ -84,22 +77,21 @@ app.post("/api/notes", (request, response) => {
     });
   };
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    id: generateId(),
-  }
+  });
 
   console.log(note);
-  notes = notes.concat(note);
-  response.json(note);
+  note.save().then((savedNote) => {
+    response.json(savedNote);
+  })
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-//console.log(`Server running on port ${PORT}`);
