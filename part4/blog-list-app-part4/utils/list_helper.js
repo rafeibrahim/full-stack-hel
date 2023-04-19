@@ -21,7 +21,29 @@ const favoriteBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
   const authorArray = _.map(blogs, 'author');
-  console.log(authorArray);
+  console.log('authorArray', authorArray);
+  const uniqueAuthorArray = [...new Set(authorArray)];
+  console.log('uniqueAuthorArray', uniqueAuthorArray);
+  const arrayWithAuthorRobert = _.filter(blogs, (blog) => {
+    return blog.author === 'Robert C. Martin';
+  });
+  console.log('arrayWithAuthorRobert', arrayWithAuthorRobert);
+  const arrayWithAuthorandBlogTotal = _.map(uniqueAuthorArray, (authorName) => {
+    arrayForAuthor = _.filter(blogs, (blog) => {
+      return blog.author === authorName;
+    });
+    return {
+      author: authorName,
+      blogs: arrayForAuthor.length,
+    };
+  });
+  console.log('arrayWithAuthorandBlogTotal', arrayWithAuthorandBlogTotal);
+  const sortedArrayWithAuthorandBlogTotal = _.orderBy(
+    arrayWithAuthorandBlogTotal,
+    ['blogs'],
+    ['desc']
+  );
+  console.log('sortedArrayWithAuthorandBlogTotal', sortedArrayWithAuthorandBlogTotal);
 };
 
 module.exports = {
