@@ -44,6 +44,7 @@ const mostBlogs = (blogs) => {
     ['desc']
   );
   console.log('sortedArrayWithAuthorandBlogTotal', sortedArrayWithAuthorandBlogTotal);
+  return sortedArrayWithAuthorandBlogTotal.length === 0 ? null : sortedArrayWithAuthorandBlogTotal[0];
 };
 
 module.exports = {

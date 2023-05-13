@@ -77,12 +77,24 @@ test('correct number of blogs are returned as json', async () => {
   const response = await api
     .get('/api/blogs')
     .expect(200)
-    .expect('Content-Type', /application\/json/)
+    .expect('Content-Type', /application\/json/);
 
-    expect(response.body).toHaveLength(6)
+  expect(response.body).toHaveLength(6);
 
   console.log('response', response);
 }, 100000);
+
+// for exercise 4.9*: Blog list tests, step2
+
+/* Write a test that verifies that the unique identifier property
+of the blog posts is named id, by default the database names 
+the property _id. Verifying the existence of a property is 
+easily done with Jest's toBeDefined matcher.
+Make the required changes to the code so that it 
+passes the test. The toJSON method discussed in part 3 is an 
+appropriate place for defining the id parameter. */
+
+
 
 // test('a valid note can be added', async () => {
 //   const newBlog = {
