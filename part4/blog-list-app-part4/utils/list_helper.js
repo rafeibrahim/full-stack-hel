@@ -19,32 +19,52 @@ const favoriteBlog = (blogs) => {
   return blogs.length === 0 ? null : blogs.reduce(reducer);
 };
 
-const mostBlogs = (blogs) => {
+const sortBlogsByAuthor = (blogs) => {
   const authorArray = _.map(blogs, 'author');
-  console.log('authorArray', authorArray);
+  // console.log('authorArray', authorArray);
   const uniqueAuthorArray = [...new Set(authorArray)];
-  console.log('uniqueAuthorArray', uniqueAuthorArray);
-  const arrayWithAuthorRobert = _.filter(blogs, (blog) => {
-    return blog.author === 'Robert C. Martin';
-  });
-  console.log('arrayWithAuthorRobert', arrayWithAuthorRobert);
-  const arrayWithAuthorandBlogTotal = _.map(uniqueAuthorArray, (authorName) => {
+  // console.log('uniqueAuthorArray', uniqueAuthorArray);
+  // const arrayWithAuthorRobert = _.filter(blogs, (blog) => {
+  //   return blog.author === 'Robert C. Martin';
+  // });
+  // console.log('arrayWithAuthorRobert', arrayWithAuthorRobert);
+  const arrayWithAuthorBlogsLikes = _.map(uniqueAuthorArray, (authorName) => {
     arrayForAuthor = _.filter(blogs, (blog) => {
       return blog.author === authorName;
     });
+    //console.log(arrayForAuthor, "arrayForAuthor");
+    const likesForAuthor = arrayForAuthor.reduce((accumulator, blog) => {
+      //console.log("accumulator", accumulator);
+      const totalLikes = accumulator += blog.likes;
+      return totalLikes;
+    }, 0)
+    //console.log("likesForAuthor", likesForAuthor)
     return {
       author: authorName,
       blogs: arrayForAuthor.length,
+      likes: likesForAuthor
     };
   });
-  console.log('arrayWithAuthorandBlogTotal', arrayWithAuthorandBlogTotal);
+  return arrayWithAuthorBlogsLikes;
+}
+
+const mostBlogs = (blogs) => {
+
+  const arrayWithAuthorAndBlogs = sortBlogsByAuthor(blogs).map((blog) => {
+    return _.pick(blog, ["author", "blogs"])
+  });
+  console.log('arrayWithAuthorAndBlogs', arrayWithAuthorAndBlogs );
   const sortedArrayWithAuthorandBlogTotal = _.orderBy(
-    arrayWithAuthorandBlogTotal,
+    arrayWithAuthorAndBlogs,
     ['blogs'],
     ['desc']
   );
   console.log('sortedArrayWithAuthorandBlogTotal', sortedArrayWithAuthorandBlogTotal);
   return sortedArrayWithAuthorandBlogTotal.length === 0 ? null : sortedArrayWithAuthorandBlogTotal[0];
+};
+
+const mostLikes = () => {
+ 
 };
 
 module.exports = {

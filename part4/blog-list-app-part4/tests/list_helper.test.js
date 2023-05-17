@@ -132,7 +132,7 @@ describe('most blogs', () => {
     });
   });
 
-  test('when list has multiple blogs, equals object which contains author with most blogs and his total blogs ', () => {
+  test('when list has multiple blogs, equals object which contains author with most blogs and his total blogs', () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs);
     expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
   });
