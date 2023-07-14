@@ -114,8 +114,11 @@ test('a blog without title or author or url is not added', async () => {
   const newBlog = {
     likes: 4,
   };
-  
+
   await api.post('/api/blogs').send(newBlog).expect(400);
+
+  const response = await api.get('/api/blogs');
+  expect(response.body).toHaveLength(initialBlogs.length);
 });
 
 afterAll(() => {
