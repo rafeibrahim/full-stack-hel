@@ -106,23 +106,17 @@ test('a valid blog can be added', async () => {
 
   expect(response.body).toHaveLength(initialBlogs.length + 1);
   expect(response.body).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining(newBlog),
-    ])
+    expect.arrayContaining([expect.objectContaining(newBlog)])
   );
 });
 
-// test('there are two notes', async () => {
-//   const response = await api.get('/api/notes');
-
-//   expect(response.body).toHaveLength(2);
-// });
-
-// test('the first note is about HTTP methods', async () => {
-//   const response = await api.get('/api/notes');
-
-//   expect(response.body[0].content).toBe('HTML is easy');
-// });
+test('a blog without title or author or url is not added', async () => {
+  const newBlog = {
+    likes: 4,
+  };
+  
+  await api.post('/api/blogs').send(newBlog).expect(400);
+});
 
 afterAll(() => {
   mongoose.connection.close();
