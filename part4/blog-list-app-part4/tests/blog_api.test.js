@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+//mongoose.set("bufferTimeoutMS", 30000);
 const supertest = require('supertest');
 const app = require('../app');
 const Blog = require('../models/blog');
@@ -58,20 +59,9 @@ beforeEach(async () => {
   await blogObject.save();
   blogObject = new Blog(initialBlogs[5]);
   await blogObject.save();
-});
+}, 100000);
 
 //for exercise 4.8: Blog list tests, step1
-
-/* Use the supertest package for writing a test that makes an HTTP GET
-request to the /api/blogs url. Verify that the blog list application
-returns the correct amount of blog posts in the JSON format.
-
-Once the test is finished, refactor the route handler to use the 
-async/await syntax instead of promises.
-
-Notice that you will have to make similar changes to the code 
-that were made in the material, like defining the test environment so 
-that you can write tests that use their own separate database. */
 
 test('correct number of blogs are returned as json', async () => {
   const response = await api
@@ -79,58 +69,60 @@ test('correct number of blogs are returned as json', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/);
 
-  expect(response.body).toHaveLength(6);
-
-  console.log('response', response);
-}, 100000);
+  expect(response.body).toHaveLength(initialBlogs.length);
+});
 
 // for exercise 4.9*: Blog list tests, step2
 
-/* Write a test that verifies that the unique identifier property
-of the blog posts is named id, by default the database names 
-the property _id. Verifying the existence of a property is 
-easily done with Jest's toBeDefined matcher.
-Make the required changes to the code so that it 
-passes the test. The toJSON method discussed in part 3 is an 
-appropriate place for defining the id parameter. */
+test('unique identifier property of the blog posts is named id', async () => {
+  const response = await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/);
 
+  expect(response.body).toHaveLength(initialBlogs.length);
+  response.body.forEach((blog) => {
+    expect(blog.id).toBeDefined();
+  });
+});
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'test title',
+    author: 'test author',
+    url: 'test url',
+    likes: 7,
+  };
 
-// test('a valid note can be added', async () => {
-//   const newBlog = {
-//     title: 'async/await simplifies making async calls',
-//     author: 'test author',
-//     url: 'test url',
-//     likes: 7,
-//   }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
 
-//   await api
-//     .post('/api/notes')
-//     .send(newBlog)
-//     .expect(201)
-//     .expect('Content-Type', /application\/json/)
+  const response = await api.get('/api/blogs');
 
-//   const response = await api.get('/api/blogs')
+  // const titles = response.body.map((blog) => blog.title);
 
-//   const contents = response.body.map(r => r.content)
-
-//   expect(response.body).toHaveLength(initialNotes.length + 1)
-//   expect(contents).toContain(
-//     'async/await simplifies making async calls'
-//   )
-// })
+  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  expect(response.body).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining(newBlog),
+    ])
+  );
+});
 
 // test('there are two notes', async () => {
-//   const response = await api.get('/api/notes')
+//   const response = await api.get('/api/notes');
 
-//   expect(response.body).toHaveLength(2)
-// })
+//   expect(response.body).toHaveLength(2);
+// });
 
 // test('the first note is about HTTP methods', async () => {
-//   const response = await api.get('/api/notes')
+//   const response = await api.get('/api/notes');
 
-//   expect(response.body[0].content).toBe('HTML is easy')
-// })
+//   expect(response.body[0].content).toBe('HTML is easy');
+// });
 
 afterAll(() => {
   mongoose.connection.close();
