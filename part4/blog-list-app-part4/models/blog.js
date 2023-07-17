@@ -4,17 +4,17 @@ const blogSchema = new mongoose.Schema({
   title: {
     type: String,
     minlength: 5,
-    required: true
+    required: true,
   },
   author: {
     type: String,
     minLength: 5,
-    required: true
+    required: true,
   },
   url: {
     type: String,
     minLength: 5,
-    required: true
+    required: true,
   },
   likes: Number,
 });
