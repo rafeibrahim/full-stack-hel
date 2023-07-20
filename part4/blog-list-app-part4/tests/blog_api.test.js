@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.set("bufferTimeoutMS", 30000);
+mongoose.set('bufferTimeoutMS', 30000);
 const supertest = require('supertest');
 const helper = require('./test_helper');
 const app = require('../app');
@@ -9,23 +9,15 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(helper.initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[1]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[2]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[3]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[4]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[5]);
-  await blogObject.save();
+  console.log('test database cleared');
+  await Blog.insertMany(helper.initialBlogs);
+  console.log('test database initiation complete');
 }, 100000);
 
 //for exercise 4.8: Blog list tests, step1
 
 test('correct number of blogs are returned as json', async () => {
+  console.log('entered test');
   const response = await api
     .get('/api/blogs')
     .expect(200)
