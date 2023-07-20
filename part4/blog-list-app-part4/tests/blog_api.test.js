@@ -9,15 +9,12 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  console.log('test database cleared');
   await Blog.insertMany(helper.initialBlogs);
-  console.log('test database initiation complete');
 }, 100000);
 
 //for exercise 4.8: Blog list tests, step1
 
 test('correct number of blogs are returned as json', async () => {
-  console.log('entered test');
   const response = await api
     .get('/api/blogs')
     .expect(200)
