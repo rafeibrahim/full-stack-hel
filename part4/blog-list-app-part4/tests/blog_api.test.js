@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//mongoose.set("bufferTimeoutMS", 30000);
+mongoose.set("bufferTimeoutMS", 30000);
 const supertest = require('supertest');
 const helper = require('./test_helper');
 const app = require('../app');
@@ -97,6 +97,21 @@ test('a specific blog can be viewed', async () => {
     .expect('Content-Type', /application\/json/);
 
   expect(resultBlog.body).toEqual(blogToView);
+});
+
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToDelete = blogsAtStart[0];
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+  expect(blogsAtEnd).toEqual(
+    expect.arrayContaining([expect.not.objectContaining(blogToDelete)])
+  );
 });
 
 afterAll(() => {
