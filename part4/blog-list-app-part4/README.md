@@ -14,6 +14,12 @@ Write test if likes porperty is missing, it will default to value 0.
 Update POST route handler to add 0 likes to the blog.
 Add request for creating blog with out likes property in route of the project.
 Verify that the test is passing appropriately.
+Exercise 4.12
+Write test to verify a blog without title and url is not added.
+Write test to verify a blog without title is not added.
+Write test to verify a blog without url is not added. 
+Make author requirement in blog schema optional.
+Verify the tests are passing as required.
 
 
 UPDATE 14 JULY 2023 12:47
