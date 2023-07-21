@@ -1,5 +1,11 @@
 Please add all updates related to this part to this file for refreshing memory
 
+UPDATE 21 JULY 2023 10:21
+Exercise 4.8 
+Write test to verify correct amount of blog posts returned in JSON format. Refactor route handler to use 
+async/await syntax.
+
+
 UPDATE 14 JULY 2023 12:47
 Updated the code for blog full stack app until part 4 -More tests and refactoring the backend. Will continue from here on. 
 
