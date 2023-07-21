@@ -6,6 +6,9 @@ Write test to verify correct amount of blog posts returned in JSON format. Refac
 async/await syntax.
 Exercise 4.9
 Write test to identify unique identifier property of the blog posts is named id.
+Exercise 4.10
+Write test to verifty that POST request to /api/blogs URL creates a new blog post. 
+Refactor route handler to use async/await syntax.
 
 
 UPDATE 14 JULY 2023 12:47
