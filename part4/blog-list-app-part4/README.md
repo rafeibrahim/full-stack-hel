@@ -4,6 +4,8 @@ UPDATE 21 JULY 2023 10:21
 Exercise 4.8 
 Write test to verify correct amount of blog posts returned in JSON format. Refactor route handler to use 
 async/await syntax.
+Exercise 4.9
+Write test to identify unique identifier property of the blog posts is named id.
 
 
 UPDATE 14 JULY 2023 12:47
