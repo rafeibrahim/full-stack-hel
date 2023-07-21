@@ -12,6 +12,7 @@ Refactor route handler to use async/await syntax.
 Exercise 4.11
 Write test if likes porperty is missing, it will default to value 0.
 Update POST route handler to add 0 likes to the blog.
+added request for creating blog with out likes property in route of the project.
 Verify that the test is passing appropriately.
 
 
