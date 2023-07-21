@@ -21,6 +21,8 @@ Write test to verify a blog without url is not added.
 Make author requirement in blog schema optional.
 Verify the tests are passing as required.
 
+Separte tests for checking content type of returned blogs and their number. Bundle them together in one describe block.
+
 
 UPDATE 14 JULY 2023 12:47
 Updated the code for blog full stack app until part 4 -More tests and refactoring the backend. Will continue from here on. 

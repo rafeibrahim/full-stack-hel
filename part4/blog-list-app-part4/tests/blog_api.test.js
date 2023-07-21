@@ -14,13 +14,18 @@ beforeEach(async () => {
 
 //for exercise 4.8: Blog list tests, step1
 
-test('correct number of blogs are returned as json', async () => {
-  const response = await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
+describe('when there is initially some notes saved', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
 
-  expect(response.body).toHaveLength(helper.initialBlogs.length);
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body).toHaveLength(helper.initialBlogs.length);
+  });
 });
 
 // for exercise 4.9*: Blog list tests, step2
@@ -80,7 +85,6 @@ test('a blog without title is not added', async () => {
   const blogsAtEnd = await helper.blogsInDb();
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
-
 
 test('a blog without url is not added', async () => {
   const newBlogWithoutUrl = {
