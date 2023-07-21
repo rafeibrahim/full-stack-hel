@@ -60,16 +60,36 @@ test('a valid blog can be added', async () => {
   );
 });
 
-test('a blog without title or author or url is not added', async () => {
-  const newBlog = {
+test('a blog without title and url is not added', async () => {
+  const newBlogWithoutBothTitleAndUrl = {
+    author: 'test author',
     likes: 4,
   };
-
-  await api.post('/api/blogs').send(newBlog).expect(400);
-
-  //const response = await api.get('/api/blogs');
+  await api.post('/api/blogs').send(newBlogWithoutBothTitleAndUrl).expect(400);
   const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
 
+test('a blog without title is not added', async () => {
+  const newBlogWithoutTitle = {
+    author: 'test author',
+    url: 'test url',
+    likes: 4,
+  };
+  await api.post('/api/blogs').send(newBlogWithoutTitle).expect(400);
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
+
+
+test('a blog without url is not added', async () => {
+  const newBlogWithoutUrl = {
+    title: 'test url',
+    author: 'test author',
+    likes: 4,
+  };
+  await api.post('/api/blogs').send(newBlogWithoutUrl).expect(400);
+  const blogsAtEnd = await helper.blogsInDb();
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
@@ -89,7 +109,9 @@ test('a blog added without likes property default to the value 0 in db', async (
   const blogsAtEnd = await helper.blogsInDb();
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
   expect(blogsAtEnd).toEqual(
-    expect.arrayContaining([expect.objectContaining({...newBlogWithoutLikesProperty, likes: 0})])
+    expect.arrayContaining([
+      expect.objectContaining({ ...newBlogWithoutLikesProperty, likes: 0 }),
+    ])
   );
 });
 
