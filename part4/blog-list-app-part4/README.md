@@ -9,6 +9,10 @@ Write test to identify unique identifier property of the blog posts is named id.
 Exercise 4.10
 Write test to verifty that POST request to /api/blogs URL creates a new blog post. 
 Refactor route handler to use async/await syntax.
+Exercise 4.11
+Write test if likes porperty is missing, it will default to value 0.
+Update POST route handler to add 0 likes to the blog.
+Verify that the test is passing appropriately.
 
 
 UPDATE 14 JULY 2023 12:47
