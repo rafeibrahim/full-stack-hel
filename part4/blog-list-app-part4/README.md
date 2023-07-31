@@ -1,5 +1,11 @@
 Please add all updates related to this part to this file for refreshing memory
 
+UPDATE 31 JULY 2023
+Exercise 4.13 Blog list expansion, step 1 1544
+Verify functionality for deleting a single blog post resource.
+Verify Use async/await.
+Verify implemention of test for it.
+
 UPDATE 21 JULY 2023 10:21
 Exercise 4.8 
 Write test to verify correct amount of blog posts returned in JSON format. Refactor route handler to use 
