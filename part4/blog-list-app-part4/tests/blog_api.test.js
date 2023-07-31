@@ -12,23 +12,30 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs);
 }, 100000);
 
-//for exercise 4.8: Blog list tests, step1
-
 describe('when there is initially some notes saved', () => {
-  test('blogs are returned as json', async () => {
-    await api
+  let blogs;
+
+  beforeEach(async () => {
+    // Fetch the blogs once and store them in the 'blogs' variable for reuse
+    if (!blogs) {
+      console.log('beforeEach in describe block');
+      const response = await api.get('/api/blogs');
+      blogs = response.body;
+    }
+  });
+
+  test('blogs are returned as json', () => {
+    return api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });
 
-  test('all blogs are returned', async () => {
-    const response = await api.get('/api/blogs');
-    expect(response.body).toHaveLength(helper.initialBlogs.length);
+  test('all blogs are returned', () => {
+    expect(blogs).toHaveLength(helper.initialBlogs.length);
   });
 });
 
-// for exercise 4.9*: Blog list tests, step2
 
 test('unique identifier property of the blog posts is named id', async () => {
   const response = await api
