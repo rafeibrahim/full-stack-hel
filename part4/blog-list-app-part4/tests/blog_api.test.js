@@ -36,7 +36,6 @@ describe('when there is initially some notes saved', () => {
   });
 });
 
-
 test('unique identifier property of the blog posts is named id', async () => {
   const response = await api
     .get('/api/blogs')
@@ -151,6 +150,26 @@ test('a blog can be deleted', async () => {
 
   expect(blogsAtEnd).toEqual(
     expect.arrayContaining([expect.not.objectContaining(blogToDelete)])
+  );
+});
+
+test('verify update the number of likes for a blog post', async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToUpdate = blogsAtStart[0];
+  const blogWithUpdatedData = {
+    ...blogToUpdate,
+    likes: blogToUpdate.likes + 1,
+  };
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogWithUpdatedData)
+    .expect(202);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toEqual(
+    expect.arrayContaining([expect.objectContaining(blogWithUpdatedData)])
   );
 });
 

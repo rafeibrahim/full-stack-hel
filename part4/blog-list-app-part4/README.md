@@ -5,6 +5,10 @@ Exercise 4.13 Blog list expansion, step 1 1544
 Verify functionality for deleting a single blog post resource.
 Verify Use async/await.
 Verify implemention of test for it.
+Exercise 4.14 Blog list expansions, step 2 1638
+Add function for updating likes of individual blog post (not working as expected)
+Add test for updating blog functionality (not working as expected)
+
 
 UPDATE 21 JULY 2023 10:21
 Exercise 4.8 
