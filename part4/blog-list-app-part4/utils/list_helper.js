@@ -53,13 +53,13 @@ const mostBlogs = (blogs) => {
   const arrayWithAuthorAndBlogs = sortBlogsByAuthor(blogs).map((blog) => {
     return _.pick(blog, ["author", "blogs"])
   });
-  console.log('arrayWithAuthorAndBlogs', arrayWithAuthorAndBlogs );
+  // console.log('arrayWithAuthorAndBlogs', arrayWithAuthorAndBlogs );
   const sortedArrayWithAuthorandBlogTotal = _.orderBy(
     arrayWithAuthorAndBlogs,
     ['blogs'],
     ['desc']
   );
-  console.log('sortedArrayWithAuthorandBlogTotal', sortedArrayWithAuthorandBlogTotal);
+  // console.log('sortedArrayWithAuthorandBlogTotal', sortedArrayWithAuthorandBlogTotal);
   return sortedArrayWithAuthorandBlogTotal.length === 0 ? null : sortedArrayWithAuthorandBlogTotal[0];
 };
 

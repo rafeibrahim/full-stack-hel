@@ -1,5 +1,10 @@
 Please add all updates related to this part to this file for refreshing memory
 
+
+UPDATE 18 AUG 2023
+Not enough notes found for last working day. 
+Audited exercises until 4.14 part 4b.
+
 UPDATE 31 JULY 2023
 Exercise 4.13 Blog list expansion, step 1 1544
 Verify functionality for deleting a single blog post resource.

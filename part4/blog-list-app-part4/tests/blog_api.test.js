@@ -18,7 +18,7 @@ describe('when there is initially some notes saved', () => {
   beforeEach(async () => {
     // Fetch the blogs once and store them in the 'blogs' variable for reuse
     if (!blogs) {
-      console.log('beforeEach in describe block');
+      //console.log('beforeEach in describe block');
       const response = await api.get('/api/blogs');
       blogs = response.body;
     }
